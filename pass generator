@@ -1,0 +1,50 @@
+import random
+import string
+
+def generate_custom_password(name, fav_item, other, length=12, use_upper=True, use_lower=True, use_digits=True):
+    # Collect the base characters from user inputs
+    base_characters = name + fav_item + other
+
+    # Collect the possible characters for the password based on the preferences
+    possible_characters = ""
+    if use_upper:
+        possible_characters += string.ascii_uppercase
+    if use_lower:
+        possible_characters += string.ascii_lowercase
+    if use_digits:
+        possible_characters += string.digits
+
+    # Ensure base characters are part of the possible characters
+    possible_characters += base_characters
+
+    # Generate the password
+    password = ''.join(random.choice(possible_characters) for _ in range(length))
+    
+    return password
+
+def get_valid_length():
+    while True:
+        length_input = input("Enter desired password length (minimum 8): ")
+        if length_input.isdigit():
+            length = int(length_input)
+            if length >= 8:
+                return length
+            else:
+                print("Password length should be at least 8 characters.")
+        else:
+            print("Please enter a valid number for the password length.")
+
+# Example usage
+if __name__ == "__main__":
+    name = input("Enter your name: ")
+    fav_item = input("Enter your favorite item (e.g., color, food, hobby): ")
+    other = input("Enter any other personal information: ")
+    length = get_valid_length()
+    use_upper = input("Include uppercase letters? (yes/no): ").lower() == "yes"
+    use_lower = input("Include lowercase letters? (yes/no): ").lower() == "yes"
+    use_digits = input("Include digits? (yes/no): ").lower() == "yes"
+
+    # Generate and display up to 4 suggested passwords
+    for i in range(4):
+        password = generate_custom_password(name, fav_item, other, length, use_upper, use_lower, use_digits)
+        print(f"Suggested password {i + 1}: {password}")
